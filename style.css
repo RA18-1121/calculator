@@ -21,6 +21,12 @@ body{
 
 .display{
     padding-bottom: 20%;
+    position: relative;
+}
+
+.display div{
+    position: absolute;
+    text-align: right;
 }
 
 button{
@@ -30,7 +36,6 @@ button{
 }
 
 .row_one div{
-    width: 50%;
     padding-bottom: 20%;
     position: relative;
 }
@@ -45,11 +50,6 @@ button{
     font-size: 32px;
 }
 
-.backspace{
+.backspace, .clear{
     font-size: 24px;
 }
-
-
-
-
-
