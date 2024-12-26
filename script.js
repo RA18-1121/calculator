@@ -1,24 +1,45 @@
 let add = (a, b) => a + b;
 let subtract = (a, b) => a - b;
 let multiply = (a, b) => a * b;
-let divide = (a, b) => a / b;
+let divide = (a, b) => {
+    if(b === 0)
+    {
+        operand_one = operand_two = operator = null;
+        remove_flag = true;
+        return "Error!";
+    }
+    return a / b;
+}
 let operand_one = operand_two = operator = null;
 let operate = (a, operator, b) => {
+    let result;
     switch (operator) {
         case "+":
-            return add(a,b);
+            result =  add(a,b);
+            break;
         case "-":
-            return subtract(a,b);
+            result =  subtract(a,b);
+            break;
         case "*":
-            return multiply(a,b);
+            result =  multiply(a,b);
+            break;
         case "/":
-            return divide(a,b);
-        default:
+            result =  divide(a,b);
     }
+    if(result.toString().includes(".") && result.toString().length > 11)
+    {
+        result = result.toPrecision(10);
+    }
+    if(result.toString().length > 11)
+    {
+        result = "Error!";
+    }
+    return result;
 }
 
 const display = document.querySelector(".display div");
 display.textContent = "0";
+display.style.fontWeight = 100;
 
 let remove_flag = true;
 let i = 1;
@@ -36,7 +57,8 @@ const low_nums = document.querySelector(".low_nums");
                 display.textContent = null;
                 remove_flag = false;
             }
-            display.textContent = display.textContent + number_button.getAttribute("class");
+            if(display.textContent.length <= 10)
+                display.textContent = display.textContent + number_button.getAttribute("class");
         });
         number_div.appendChild(number_button);
         low_nums.appendChild(number_div);
@@ -57,7 +79,8 @@ const middle_nums = document.querySelector(".middle_nums");
                 display.textContent = null;
                 remove_flag = false;
             }
-            display.textContent = display.textContent + number_button.getAttribute("class");
+            if(display.textContent.length <= 10)
+                display.textContent = display.textContent + number_button.getAttribute("class");
         });
         number_div.appendChild(number_button);
         middle_nums.appendChild(number_div);
@@ -78,7 +101,8 @@ const high_nums = document.querySelector(".high_nums");
                 display.textContent = null;
                 remove_flag = false;
             }
-            display.textContent = display.textContent + number_button.getAttribute("class");
+            if(display.textContent.length <= 10)
+                display.textContent = display.textContent + number_button.getAttribute("class");
         });
         number_div.appendChild(number_button);
         high_nums.appendChild(number_div);
@@ -115,7 +139,8 @@ add_op.addEventListener("click", () => {
         {
             operand_two = Number(display.textContent);
             display.textContent = `${operate(operand_one, operator, operand_two)}`;
-            operand_one = Number(display.textContent);
+            if(display.textContent != "Error!")
+                operand_one = Number(display.textContent);
             operand_two = null;
         }
         remove_flag = true;
@@ -139,7 +164,8 @@ subtract_op.addEventListener("click", () => {
         {
             operand_two = Number(display.textContent);
             display.textContent = `${operate(operand_one, operator, operand_two)}`;
-            operand_one = Number(display.textContent);
+            if(display.textContent != "Error!")
+                operand_one = Number(display.textContent);
             operand_two = null;
         }
         remove_flag = true;
@@ -163,7 +189,8 @@ multiply_op.addEventListener("click", () => {
         {
             operand_two = Number(display.textContent);
             display.textContent = `${operate(operand_one, operator, operand_two)}`;
-            operand_one = Number(display.textContent);
+            if(display.textContent != "Error!")
+                operand_one = Number(display.textContent);
             operand_two = null;
         }
         remove_flag = true;
@@ -187,7 +214,8 @@ divide_op.addEventListener("click", () => {
         {
             operand_two = Number(display.textContent);
             display.textContent = `${operate(operand_one, operator, operand_two)}`;
-            operand_one = Number(display.textContent);
+            if(display.textContent != "Error!")
+                operand_one = Number(display.textContent);
             operand_two = null;
         }
         remove_flag = true;
@@ -195,10 +223,56 @@ divide_op.addEventListener("click", () => {
     }
 });
 
+const zero = document.querySelector(".zero");
+zero.addEventListener("click", () => {
+    if(display.textContent.length <= 10 && display.textContent !== "0")
+    {
+        if(remove_flag)
+        {
+            display.textContent = "0";
+            remove_flag = false;
+        }
+        else
+            display.textContent = display.textContent.concat("0");
+    }
+})
+
 const decimal = document.querySelector(".decimal");
 decimal.addEventListener("click", () => {
     if(!display.textContent.includes("."))
+    {
+        if(display.textContent === "0")
+            remove_flag = false;
         display.textContent = display.textContent + ".";
+    }
+})
+
+const sign = document.querySelector(".sign");
+sign.addEventListener("click", () => {
+    if(display.textContent != 0)
+    {
+        if(display.textContent.at(0) !== "-")
+            display.textContent = "-" + display.textContent;
+        else
+            display.textContent = display.textContent.slice(1); 
+    }
+})
+
+const backspace = document.querySelector(".backspace");
+backspace.addEventListener("click", () => {
+    display.textContent = display.textContent.slice(0, -1);
+    if(display.textContent == 0)
+    {
+        display.textContent = "0";
+        remove_flag = true;
+    }   
+})
+
+const clear = document.querySelector(".clear");
+clear.addEventListener("click", () => {
+    display.textContent = "0";
+    remove_flag = true;
+    operand_one = operand_two = operator = null;
 })
 
 const enter = document.querySelector(".enter");
@@ -214,21 +288,4 @@ enter.addEventListener("click", () => {
         operand_one = operator = null;
     }
     remove_flag = true;
-})
-
-const clear = document.querySelector(".clear");
-clear.addEventListener("click", () => {
-    display.textContent = "0";
-    remove_flag = true;
-    operand_one = operand_two = operator = null;
-})
-
-const backspace = document.querySelector(".backspace");
-backspace.addEventListener("click", () => {
-    display.textContent = display.textContent.slice(0, -1);
-    if(display.textContent == 0)
-    {
-        display.textContent = "0";
-        remove_flag = true;
-    }   
 })
