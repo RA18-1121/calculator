@@ -20,14 +20,11 @@ let operate = (a, operator, b) => {
 const display = document.querySelector(".display div");
 display.textContent = "0";
 
-const row_one = document.querySelectorAll('.row_one div');
-row_one.forEach((div) => div.setAttribute("style", `width: ${1 / 3 * 100}%`) );
-
 let remove_flag = true;
-let i = 0;
-const row_four = document.querySelector(".row_num_lower");
+let i = 1;
+const low_nums = document.querySelector(".low_nums");
 {
-    for(i; i < 5; i++)
+    for(i; i < 4; i++)
     {
         let number_div = document.createElement("div");
         let number_button = document.createElement("button");
@@ -40,14 +37,34 @@ const row_four = document.querySelector(".row_num_lower");
                 remove_flag = false;
             }
             display.textContent = display.textContent + number_button.getAttribute("class");
-            if(Number(display.textContent) === 0)
-                remove_flag = true;
         });
         number_div.appendChild(number_button);
-        row_four.appendChild(number_div);
+        low_nums.appendChild(number_div);
     }
 }
-const row_three = document.querySelector(".row_num_higher");
+
+const middle_nums = document.querySelector(".middle_nums");
+{
+    for(i; i < 7; i++)
+    {
+        let number_div = document.createElement("div");
+        let number_button = document.createElement("button");
+        number_button.textContent = `${i}`;
+        number_button.classList.add(`${i}`);
+        number_button.addEventListener("click", () => {
+            if(remove_flag)
+            {
+                display.textContent = null;
+                remove_flag = false;
+            }
+            display.textContent = display.textContent + number_button.getAttribute("class");
+        });
+        number_div.appendChild(number_button);
+        middle_nums.appendChild(number_div);
+    }
+}
+
+const high_nums = document.querySelector(".high_nums");
 {
     for(i; i < 10; i++)
     {
@@ -62,13 +79,20 @@ const row_three = document.querySelector(".row_num_higher");
                 remove_flag = false;
             }
             display.textContent = display.textContent + number_button.getAttribute("class");
-            if(Number(display.textContent) === 0)
-                remove_flag = true;
         });
         number_div.appendChild(number_button);
-        row_three.appendChild(number_div);
+        high_nums.appendChild(number_div);
     }
 }
+
+const squares = document.querySelectorAll(".squares div div");
+squares.forEach((div) => {
+    div.style.width = `${100 / 3}%`;
+    div.style.paddingBottom = `${80 / 3}%`;
+});
+
+const rectangles = document.querySelectorAll(".rectangles div");
+rectangles.forEach((div) => div.setAttribute("style", `padding-bottom: ${320 / 3}%`));
 
 const add_op = document.querySelector(".add_op");
 const subtract_op = document.querySelector(".subtract_op");
@@ -206,6 +230,5 @@ backspace.addEventListener("click", () => {
     {
         display.textContent = "0";
         remove_flag = true;
-    }
-    
+    }   
 })
