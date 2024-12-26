@@ -18,12 +18,12 @@ let operate = (a, operator, b) => {
 }
 
 const display = document.querySelector(".display div");
-display.textContent = null;
+display.textContent = "0";
 
 const row_one = document.querySelectorAll('.row_one div');
 row_one.forEach((div) => div.setAttribute("style", `width: ${1 / 3 * 100}%`) );
 
-let remove_flag = false;
+let remove_flag = true;
 let i = 0;
 const row_four = document.querySelector(".row_num_lower");
 {
@@ -40,6 +40,8 @@ const row_four = document.querySelector(".row_num_lower");
                 remove_flag = false;
             }
             display.textContent = display.textContent + number_button.getAttribute("class");
+            if(Number(display.textContent) === 0)
+                remove_flag = true;
         });
         number_div.appendChild(number_button);
         row_four.appendChild(number_div);
@@ -60,6 +62,8 @@ const row_three = document.querySelector(".row_num_higher");
                 remove_flag = false;
             }
             display.textContent = display.textContent + number_button.getAttribute("class");
+            if(Number(display.textContent) === 0)
+                remove_flag = true;
         });
         number_div.appendChild(number_button);
         row_three.appendChild(number_div);
@@ -75,6 +79,7 @@ add_op.addEventListener("click", () => {
     if(remove_flag)
     {
         operator = "+";
+        operand_one = Number(display.textContent);
     }
     else if(display.textContent !== null)
     {
@@ -98,6 +103,7 @@ subtract_op.addEventListener("click", () => {
     if(remove_flag)
     {
         operator = "-";
+        operand_one = Number(display.textContent);
     }
     else if(display.textContent !== null)
     {
@@ -121,6 +127,7 @@ multiply_op.addEventListener("click", () => {
     if(remove_flag)
     {
         operator = "*";
+        operand_one = Number(display.textContent);
     }
     else if(display.textContent !== null)
     {
@@ -144,6 +151,7 @@ divide_op.addEventListener("click", () => {
     if(remove_flag)
     {
         operator = "/";
+        operand_one = Number(display.textContent);
     }
     else if(display.textContent !== null)
     {
@@ -163,6 +171,12 @@ divide_op.addEventListener("click", () => {
     }
 });
 
+const decimal = document.querySelector(".decimal");
+decimal.addEventListener("click", () => {
+    if(!display.textContent.includes("."))
+        display.textContent = display.textContent + ".";
+})
+
 const enter = document.querySelector(".enter");
 enter.addEventListener("click", () => {
     if(operand_one !== null)
@@ -175,4 +189,23 @@ enter.addEventListener("click", () => {
         }
         operand_one = operator = null;
     }
+    remove_flag = true;
+})
+
+const clear = document.querySelector(".clear");
+clear.addEventListener("click", () => {
+    display.textContent = "0";
+    remove_flag = true;
+    operand_one = operand_two = operator = null;
+})
+
+const backspace = document.querySelector(".backspace");
+backspace.addEventListener("click", () => {
+    display.textContent = display.textContent.slice(0, -1);
+    if(display.textContent == 0)
+    {
+        display.textContent = "0";
+        remove_flag = true;
+    }
+    
 })
